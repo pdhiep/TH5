@@ -232,6 +232,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+<<<<<<< HEAD
   nested:
     dependency: transitive
     description:
@@ -240,6 +241,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+=======
+>>>>>>> 459f6bd10c70fa80c2292c6a009d9298eead7c58
   path:
     dependency: transitive
     description:
@@ -256,6 +259,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+<<<<<<< HEAD
   provider:
     dependency: "direct main"
     description:
@@ -264,6 +268,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.5+1"
+=======
+>>>>>>> 459f6bd10c70fa80c2292c6a009d9298eead7c58
   sky_engine:
     dependency: transitive
     description: flutter

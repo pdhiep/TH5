@@ -61,4 +61,3 @@ class StudentManagerApp extends StatelessWidget {
     );
   }
 }
-
