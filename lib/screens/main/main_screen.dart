@@ -1,77 +1,133 @@
 import 'package:flutter/material.dart';
-import '../dashboard/dashboard_screen.dart';
-import '../student/student_list_screen.dart';
-import '../dashboard/statistics_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../services/theme_service.dart';
 import '../settings/settings_screen.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends ConsumerStatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    const DashboardScreen(),
-    const StudentListScreen(),
-    const StatisticsScreen(),
-    const SettingsScreen(),
+  final List<Widget> _pages = [
+    const HomeTab(),
+    const ProfileTab(),
+    const NotificationsTab(),
   ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      appBar: AppBar(
+        title: const Text('TH5 App'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+          ),
+        ],
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Colors.grey.shade400,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.grid_view_rounded),
-              label: 'Trang chủ',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school_outlined),
-              activeIcon: Icon(Icons.school_rounded),
-              label: 'Sinh viên',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart_outlined),
-              activeIcon: Icon(Icons.bar_chart_rounded),
-              label: 'Thống kê',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_rounded),
-              activeIcon: Icon(Icons.person_rounded),
-              label: 'Cá nhân',
-            ),
-          ],
-        ),
+      body: Center(child: _pages[_selectedIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang Chủ'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Hồ Sơ'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Thông Báo',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
+    );
+  }
+}
+
+class HomeTab extends StatelessWidget {
+  const HomeTab({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Trang Chủ',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Text('Nội dung Trang Chủ'),
+        ),
+      ],
+    );
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  const ProfileTab({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Hồ Sơ Cá Nhân',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        const CircleAvatar(radius: 50, child: Icon(Icons.person, size: 50)),
+        const SizedBox(height: 20),
+        const Text('Người Dùng'),
+      ],
+    );
+  }
+}
+
+class NotificationsTab extends StatelessWidget {
+  const NotificationsTab({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Thông Báo',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Text('Không có thông báo mới'),
+        ),
+      ],
     );
   }
 }

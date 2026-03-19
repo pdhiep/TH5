@@ -23,6 +23,9 @@ class SettingsScreen extends StatelessWidget {
           _buildSectionHeader(context, 'Giao diện'),
           ListTile(
             leading: Icon(themeService.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            leading: Icon(
+              themeService.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+            ),
             title: const Text('Chế độ tối'),
             trailing: Switch(
               value: themeService.isDarkMode,
