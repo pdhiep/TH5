@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'screens/main/splash_screen.dart';
+import 'services/database_service.dart';
 import 'services/auth_service.dart';
 import 'services/theme_service.dart';
-import 'main/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +30,13 @@ void main() async {
   } catch (e) {
     print("Firebase initialization failed: $e");
   }
-
+  
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (_) => ThemeService()),
+        Provider<DatabaseService>(create: (_) => DatabaseService()),
+        Provider<AuthService>(create: (_) => AuthService()),
+        ChangeNotifierProvider<ThemeService>(create: (_) => ThemeService()),
       ],
       child: const StudentManagerApp(),
     ),
@@ -45,19 +48,6 @@ class StudentManagerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeService = Provider.of<ThemeService>(context);
-    
-    return MaterialApp(
-      title: 'Student Manager',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1D61E7),
-          brightness: themeService.isDarkMode ? Brightness.dark : Brightness.light,
-        ),
-        useMaterial3: true,
-      ),
-      home: const SplashScreen(),
     return Consumer<ThemeService>(
       builder: (context, themeService, child) {
         return MaterialApp(

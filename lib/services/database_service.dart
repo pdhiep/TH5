@@ -14,25 +14,9 @@ class DatabaseService {
   // --- Student CRUD ---
   Future<void> addStudent(Student student) => _studentsRef.add(student.toMap());
   Future<void> updateStudent(Student student) => _studentsRef.doc(student.id).update(student.toMap());
-
   Future<void> deleteStudent(String id) => _studentsRef.doc(id).delete();
 
   Stream<List<Student>> getStudents({String? classFilter, String? statusFilter, String? classificationFilter}) {
-    Query query = _studentsRef;
-
-    if (classFilter != null && classFilter != 'Tất cả') {
-      query = query.where('class_name', isEqualTo: classFilter);
-    }
-
-  Future<void> updateStudent(Student student) =>
-      _studentsRef.doc(student.id).update(student.toMap());
-  Future<void> deleteStudent(String id) => _studentsRef.doc(id).delete();
-
-  Stream<List<Student>> getStudents({
-    String? classFilter,
-    String? statusFilter,
-    String? classificationFilter,
-  }) {
     Query query = _studentsRef;
     if (classFilter != null && classFilter != 'Tất cả') {
       query = query.where('class_name', isEqualTo: classFilter);
@@ -40,7 +24,7 @@ class DatabaseService {
     if (statusFilter != null && statusFilter != 'Tất cả') {
       query = query.where('status', isEqualTo: statusFilter);
     }
-
+    
     return query.snapshots().map((snapshot) {
       List<Student> students = snapshot.docs.map((doc) {
         return Student.fromMap(doc.id, doc.data() as Map<String, dynamic>);
@@ -60,7 +44,6 @@ class DatabaseService {
         .where('name', isLessThanOrEqualTo: '$query\uf8ff')
         .snapshots()
         .map((snapshot) {
-
       return snapshot.docs.map((doc) {
         return Student.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }).toList();
@@ -95,7 +78,6 @@ class DatabaseService {
   // --- Department CRUD ---
   Future<void> addDepartment(Department dept) => _departmentsRef.add(dept.toMap());
   Future<void> updateDepartment(Department dept) => _departmentsRef.doc(dept.id).update(dept.toMap());
-
   Future<void> deleteDepartment(String id) => _departmentsRef.doc(id).delete();
 
   Stream<List<Department>> getDepartments() {
@@ -110,12 +92,14 @@ class DatabaseService {
   Stream<Map<String, dynamic>> getStatisticsStream() {
     return _studentsRef.snapshots().map((snapshot) {
       int total = snapshot.docs.length;
+      
       if (total == 0) {
         return {
           'total': 0,
           'averageGpa': 0.0,
           'genderStats': {'Nam': 0, 'Nữ': 0},
           'classStats': <String, int>{},
+          'classificationStats': <String, int>{'Xuất sắc': 0, 'Giỏi': 0, 'Khá': 0, 'Trung bình': 0, 'Yếu': 0},
         };
       }
 
@@ -123,27 +107,16 @@ class DatabaseService {
       Map<String, int> genderStats = {'Nam': 0, 'Nữ': 0, 'Khác': 0};
       Map<String, int> classStats = {};
       Map<String, int> classificationStats = {'Xuất sắc': 0, 'Giỏi': 0, 'Khá': 0, 'Trung bình': 0, 'Yếu': 0};
-      Map<String, int> classificationStats = {
-        'Xuất sắc': 0,
-        'Giỏi': 0,
-        'Khá': 0,
-        'Trung bình': 0,
-        'Yếu': 0,
-      };
+
       for (var doc in snapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         Student student = Student.fromMap(doc.id, data);
+        
         totalGpa += student.gpa;
         
         String gender = student.gender;
         genderStats[gender] = (genderStats[gender] ?? 0) + 1;
         
-
-        totalGpa += student.gpa;
-
-        String gender = student.gender;
-        genderStats[gender] = (genderStats[gender] ?? 0) + 1;
-
         String className = student.className;
         classStats[className] = (classStats[className] ?? 0) + 1;
 

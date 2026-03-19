@@ -2,6 +2,7 @@ class ClassModel {
   String? id;
   String name;
   String departmentId;
+
   ClassModel({
     this.id,
     required this.name,

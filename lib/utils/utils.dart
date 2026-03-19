@@ -24,7 +24,6 @@ class ValidationUtils {
   static String? validatePhone(String? value) {
     if (value == null || value.isEmpty) return 'Số điện thoại không được để trống';
     if (value.length < 10) return 'Số điện thoại phải có ít nhất 10 số';
-
     return null;
   }
 
