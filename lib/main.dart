@@ -8,9 +8,9 @@ import 'main/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
   try {
     if (kIsWeb) {
+      // Configuration for thuchanh5-89077
       await Firebase.initializeApp(
         options: const FirebaseOptions(
           apiKey: "AIzaSyD0__87wT1FhwXPC208sb1QSxbtwATioPY",
@@ -58,6 +58,17 @@ class StudentManagerApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+    return Consumer<ThemeService>(
+      builder: (context, themeService, child) {
+        return MaterialApp(
+          title: 'Student Manager',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeService.lightTheme,
+          darkTheme: ThemeService.darkTheme,
+          themeMode: themeService.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }
