@@ -39,10 +39,6 @@ class StudentCard extends StatelessWidget {
         ),
         child: ListTile(
           onTap: onTap,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
           leading: Hero(
             tag: 'avatar_${student.id}',
             child: CircleAvatar(
@@ -66,10 +62,6 @@ class StudentCard extends StatelessWidget {
             padding: const EdgeInsets.only(top: 4.0),
             child: Text(
               '${student.studentCode} • ${student.className}',
-              style: TextStyle(
-                color: colorScheme.onSurfaceVariant,
-                fontSize: 13,
-              ),
             ),
           ),
           trailing: Container(
@@ -77,9 +69,6 @@ class StudentCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: _getGpaColor(student.gpa).withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: _getGpaColor(student.gpa).withOpacity(0.2),
-              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

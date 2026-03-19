@@ -13,12 +13,16 @@ class SettingsScreen extends StatelessWidget {
     final authService = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Cài đặt'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Cài đặt'),
+        centerTitle: true,
+      ),
       body: ListView(
         children: [
           const SizedBox(height: 20),
           _buildSectionHeader(context, 'Giao diện'),
           ListTile(
+            leading: Icon(themeService.isDarkMode ? Icons.dark_mode : Icons.light_mode),
             leading: Icon(
               themeService.isDarkMode ? Icons.dark_mode : Icons.light_mode,
             ),
@@ -75,9 +79,9 @@ class SettingsScreen extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.bold,
-        ),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
